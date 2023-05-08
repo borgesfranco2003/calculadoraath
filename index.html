@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de ATH</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Calculadora de Potencial de Investimento com base no ATH</h1>
+  
+  <form id="calculadora">
+    <label for="investimento">Valor a investir (em USD):</label>
+    <input type="number" name="investimento" id="investimento" min="0" step="0.01">
+    
+    <div id="criptomoedas-container">
+      <div class="criptomoeda-linha">
+        <select name="criptomoeda" class="criptomoeda">
+          <option value="BTC">Bitcoin</option>
+          <option value="ETH">Ethereum</option>
+          <option value="BNB">Binance Coin</option>
+          <option value="ADA">Cardano</option>
+          <option value="DOGE">Dogecoin</option>
+          <option value="XRP">Ripple</option>
+          <option value="MATIC">Polygon</option>
+          <option value="SOL">Solana</option>
+          <option value="DOT">Polkadot</option>
+          <option value="TRX">Tron</option>
+          <option value="LTC">Litecoin</option>
+          <option value="AVAX">Avalanche</option>
+          <option value="UNI">Uniswap</option>
+          <option value="LINK">Chainlink</option>
+          <option value="ATOM">Cosmos</option>
+          <option value="XMR">Monero</option>
+          <option value="ETC">Ethereum Classic</option>
+          <option value="ICP">Internet Computer</option>
+          <option value="FIL">Filecoin</option>
+          <option value="CRO">Cronos</option>
+          <option value="NEAR">Near Protocol</option>
+          <option value="VET">VeChain</option>
+          <option value="APE">ApeCoin</option>
+          <option value="ALGO">Algorand</option>
+          <option value="GRT">The Graph</option>
+          <option value="SAND">The Sandbox</option>
+          <option value="XRD">Radix</option>
+          <option value="AXS">Axie Infinity</option>
+          <option value="SNX">Synthetix Network</option>
+          <option value="AAVE">Aave</option>
+        </select>
+        <p class="resultado-linha"></p>
+      </div>
+    </div>
+    
+    <button type="button" onclick="adicionarLinhaCriptomoeda()">Adicionar mais criptomoedas</button>
+    <button type="submit">Calcular</button>
+  </form>
+
+  <p style="margin-bottom: 50px; text-align: center;">
+    Aplicativo oferecido pela comunidade Carlos Crypto Night, acesse nosso grupo de membro do youtube <a href="https://www.youtube.com/channel/UCIrdXeHE82Dizo-OYDKCzJQ/join">https://www.youtube.com/channel/UCIrdXeHE82Dizo-OYDKCzJQ/join</a>.
+  </p>
+
+  <p style="margin-bottom: 50px; text-align: center;">
+    Se deseja participar do nosso grupo de operações defi, acesse aqui <a href="https://botgram.club/defi-ops">https://botgram.club/defi-ops</a>.
+  </p>
+
+  <p style="margin-bottom: 50px; text-align: center;">
+    Esse aplicativo não é uma recomendação de investimento, apenas use para fins educacionais.
+  </p>
+
+  <img src="https://i.postimg.cc/7Yvj4PKH/BITICA-07-MAIO.jpg" alt="Descrição da imagem" style="display: block; margin-left: auto; margin-right: auto;">
+
+  <script src="script.js"></script>
+</body>
+</html>
