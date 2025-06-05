@@ -1,0 +1,16 @@
+{
+  "name": "calculadoraath",
+  "version": "1.0.0",
+  "description": "Esta aplicação web calcula o potencial de lucro caso determinadas criptomoedas voltem ao seu valor máximo histórico (ATH). Os valores de ATH são atualizados automaticamente a partir da API pública da CoinGecko sempre que o cálculo é executado.",
+  "main": "config.example.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

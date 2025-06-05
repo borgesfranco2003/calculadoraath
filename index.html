@@ -20,7 +20,7 @@
   
   <form id="calculadora">
     <label for="investimento">Valor a investir (em USD):</label>
-    <input type="number" name="investimento" id="investimento" min="0" step="0.01">
+    <input type="number" name="investimento" id="investimento" min="0" step="0.01" required>
     
     <div id="criptomoedas-container">
       <div class="criptomoeda-linha">
@@ -56,13 +56,22 @@
           <option value="SNX">Synthetix Network</option>
           <option value="AAVE">Aave</option>
         </select>
-        <p class="resultado-linha"></p>
       </div>
     </div>
-    
     <button type="button" onclick="adicionarLinhaCriptomoeda()">Adicionar mais criptomoedas</button>
     <button type="submit">Calcular</button>
   </form>
+
+  <table id="tabela-resultados" style="margin-top:20px;width:100%;text-align:center;border-collapse:collapse;">
+    <thead>
+      <tr>
+        <th>Criptomoeda</th>
+        <th>Quantidade</th>
+        <th>Ganho Potencial (USD)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
   <p style="margin-bottom: 50px; text-align: center;">
     Aplicativo oferecido pela comunidade Carlos Crypto Night, acesse nosso grupo de membro do youtube <a href="https://www.youtube.com/channel/UCIrdXeHE82Dizo-OYDKCzJQ/join">https://www.youtube.com/channel/UCIrdXeHE82Dizo-OYDKCzJQ/join</a>.
@@ -78,6 +87,7 @@
 
   <img src="https://i.postimg.cc/7Yvj4PKH/BITICA-07-MAIO.jpg" alt="Descrição da imagem" style="display: block; margin-left: auto; margin-right: auto;">
 
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
