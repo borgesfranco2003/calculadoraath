@@ -21,6 +21,17 @@ window.API_KEY = 'SUA_CHAVE_AQUI';
 
 Sem uma chave válida a aplicação não conseguirá consultar os preços atuais.
 
+## Testes
+
+Para rodar os testes automatizados é necessário ter o [Node.js](https://nodejs.org/) instalado. Depois, execute:
+
+```bash
+npm install
+npm test
+```
+
+O teste principal verifica se a função de cálculo de ganho potencial está funcionando corretamente.
+
 ## Aviso
 
 Esta ferramenta é apenas para fins educacionais e não constitui recomendação de investimento.

@@ -118,18 +118,39 @@ async function atualizarPrecoAtual(criptoMoedas) {
   }
 }
 
+// Função pura para calcular quantidade e ganho potencial
+function calcularGanho(investimento, precoAtual, ath) {
+  if (!precoAtual || isNaN(precoAtual)) {
+    throw new Error('Preço atual inválido');
+  }
+  const quantidade = investimento / precoAtual;
+  const ganho = quantidade * ath - investimento;
+  return { quantidade, ganho };
+}
+
+// Torna a função acessível para testes e para o navegador
+if (typeof module !== 'undefined') {
+  module.exports = { calcularGanho };
+} else {
+  window.calcularGanho = calcularGanho;
+}
+
 function adicionarLinhaCriptomoeda() {
   const container = document.getElementById('criptomoedas-container');
   const linhasExistentes = container.querySelectorAll('.criptomoeda-linha');
 
   if (linhasExistentes.length < 10) {
     const novaLinha = linhasExistentes[0].cloneNode(true);
+    // Limpa a seleção da nova linha para evitar confusão
+    const select = novaLinha.querySelector('.criptomoeda');
+    if (select) select.selectedIndex = 0;
     container.appendChild(novaLinha);
   } else {
     alert('Limite máximo de 10 criptomoedas atingido.');
   }
 }
 
+if (typeof document !== 'undefined') {
 document.getElementById("calculadora").addEventListener("submit", async function(event) {
   event.preventDefault();
 
@@ -159,8 +180,11 @@ document.getElementById("calculadora").addEventListener("submit", async function
     const moedaNome = criptoMoedas[moedaSelecionada].nome;
     const precoAtualMoeda = criptoMoedas[moedaSelecionada].precoAtual;
 
-    const quantidadeMoedas = investimento / precoAtualMoeda;
-    const potencialGanho = quantidadeMoedas * athMoeda - investimento;
+    if (typeof precoAtualMoeda === 'undefined') {
+      alert(`Preço atual não encontrado para ${moedaNome}.`);
+      return;
+    }
+    const { quantidade: quantidadeMoedas, ganho: potencialGanho } = calcularGanho(investimento, precoAtualMoeda, athMoeda);
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -170,3 +194,4 @@ document.getElementById("calculadora").addEventListener("submit", async function
     tbody.appendChild(tr);
   });
 });
+}
