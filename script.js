@@ -1,3 +1,6 @@
+'use strict';
+
+// A chave da API deve ser definida em config.js como window.API_KEY
 const criptoMoedas = {
   BTC: { nome: 'Bitcoin', ath: 64863.10 },
   ETH: { nome: 'Ethereum', ath: 4374.31 },
@@ -31,23 +34,87 @@ const criptoMoedas = {
   AAVE: { nome: 'Aave', ath: 628.17 }
 };
 
+// IDs das criptomoedas na API da CoinGecko para atualizar o ATH automaticamente
+const COINGECKO_IDS = {
+  BTC: 'bitcoin',
+  ETH: 'ethereum',
+  BNB: 'binancecoin',
+  ADA: 'cardano',
+  DOGE: 'dogecoin',
+  XRP: 'ripple',
+  MATIC: 'matic-network',
+  SOL: 'solana',
+  DOT: 'polkadot',
+  TRX: 'tron',
+  LTC: 'litecoin',
+  AVAX: 'avalanche-2',
+  UNI: 'uniswap',
+  LINK: 'chainlink',
+  ATOM: 'cosmos',
+  XMR: 'monero',
+  ETC: 'ethereum-classic',
+  ICP: 'internet-computer',
+  FIL: 'filecoin',
+  CRO: 'crypto-com-chain',
+  NEAR: 'near',
+  VET: 'vechain',
+  APE: 'apecoin',
+  ALGO: 'algorand',
+  GRT: 'the-graph',
+  SAND: 'the-sandbox',
+  XRD: 'radix',
+  AXS: 'axie-infinity',
+  SNX: 'synthetix-network-token',
+  AAVE: 'aave'
+};
+
 async function buscarPrecosCripto() {
-  const apiKey = 'fcac89c29fc03198df0cd48373b27f366a266fdbdd344a9e865cd5067ae704c4';
+  if (typeof API_KEY === 'undefined') {
+    throw new Error('API key não definida. Crie um arquivo config.js com sua chave.');
+  }
   const simbolos = 'BTC,ETH,BNB,ADA,DOGE,XRP,MATIC,SOL,DOT,TRX,LTC,AVAX,UNI,LINK,ATOM,XMR,ETC,ICP,FIL,CRO,NEAR,VET,APE,ALGO,GRT,SAND,XRD,AXS,SNX,AAVE';
-  const url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${simbolos}&tsyms=USD&api_key=${apiKey}`;
+  const url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${simbolos}&tsyms=USD&api_key=${API_KEY}`;
   try {
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Falha na requisição: ' + response.status);
+    }
     const precos = await response.json();
     return precos;
   } catch (error) {
     console.error('Erro ao buscar preços das criptomoedas:', error);
+    alert('Não foi possível obter os preços atuais. Tente novamente mais tarde.');
+    return null;
+  }
+}
+
+async function atualizarATH(criptoMoedas) {
+  const ids = Object.values(COINGECKO_IDS).join(',');
+  const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_desc&per_page=250&page=1&sparkline=false`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Falha na requisição: ' + response.status);
+    }
+    const dados = await response.json();
+    dados.forEach(coin => {
+      const simbolo = Object.keys(COINGECKO_IDS).find(key => COINGECKO_IDS[key] === coin.id);
+      if (criptoMoedas[simbolo]) {
+        criptoMoedas[simbolo].ath = coin.ath;
+      }
+    });
+  } catch (error) {
+    console.error('Erro ao atualizar ATH:', error);
   }
 }
 
 async function atualizarPrecoAtual(criptoMoedas) {
   const precos = await buscarPrecosCripto();
+  if (!precos) return;
   for (const simbolo in precos) {
-    criptoMoedas[simbolo].precoAtual = precos[simbolo].USD;
+    if (criptoMoedas[simbolo]) {
+      criptoMoedas[simbolo].precoAtual = precos[simbolo].USD;
+    }
   }
 }
 
@@ -66,6 +133,8 @@ function adicionarLinhaCriptomoeda() {
 document.getElementById("calculadora").addEventListener("submit", async function(event) {
   event.preventDefault();
 
+  // Atualiza ATH e preços atuais antes dos cálculos
+  await atualizarATH(criptoMoedas);
   await atualizarPrecoAtual(criptoMoedas);
 
   const investimento = parseFloat(document.getElementById("investimento").value);
@@ -76,10 +145,16 @@ document.getElementById("calculadora").addEventListener("submit", async function
   }
 
   const linhasCriptomoedas = document.querySelectorAll(".criptomoeda-linha");
+  const tbody = document.querySelector('#tabela-resultados tbody');
+  tbody.innerHTML = '';
 
   linhasCriptomoedas.forEach(linha => {
     const selecao = linha.querySelector(".criptomoeda");
     const moedaSelecionada = selecao.value;
+    if (!criptoMoedas[moedaSelecionada]) {
+      alert("Moeda selecionada inválida.");
+      return;
+    }
     const athMoeda = criptoMoedas[moedaSelecionada].ath;
     const moedaNome = criptoMoedas[moedaSelecionada].nome;
     const precoAtualMoeda = criptoMoedas[moedaSelecionada].precoAtual;
@@ -87,7 +162,11 @@ document.getElementById("calculadora").addEventListener("submit", async function
     const quantidadeMoedas = investimento / precoAtualMoeda;
     const potencialGanho = quantidadeMoedas * athMoeda - investimento;
 
-    const resultadoLinha = linha.querySelector(".resultado-linha");
-    resultadoLinha.innerHTML = `Se você investir <strong>$${investimento.toFixed(2)}</strong> em <strong>${moedaNome}</strong> e ele atingir o ATH novamente, você poderá obter um ganho potencial de <strong>$${potencialGanho.toFixed(2)}</strong>.`;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${moedaNome}</td>
+      <td>${quantidadeMoedas.toFixed(4)}</td>
+      <td>$${potencialGanho.toFixed(2)}</td>`;
+    tbody.appendChild(tr);
   });
 });
