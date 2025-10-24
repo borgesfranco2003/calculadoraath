@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nano Banana Image Generator - Gemini AI</title>
+    <link rel="stylesheet" href="public/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🍌 Nano Banana Image Generator</h1>
+            <p class="subtitle">Gere imagens incríveis usando Gemini AI</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab-button active" data-tab="generate">
+                🎨 Gerar Imagem
+            </button>
+            <button class="tab-button" data-tab="edit">
+                ✏️ Editar Imagem
+            </button>
+            <button class="tab-button" data-tab="upscale">
+                📈 Upscale
+            </button>
+            <button class="tab-button" data-tab="variations">
+                🔄 Variações
+            </button>
+            <button class="tab-button" data-tab="models">
+                🤖 Modelos
+            </button>
+        </nav>
+
+        <!-- Tab: Generate -->
+        <div class="tab-content active" id="generate-tab">
+            <div class="form-section">
+                <h2>Gerar Nova Imagem</h2>
+                <form id="generate-form">
+                    <div class="form-group">
+                        <label for="prompt">Prompt (Descrição) *</label>
+                        <textarea
+                            id="prompt"
+                            name="prompt"
+                            rows="4"
+                            placeholder="Ex: Um pôr do sol vibrante sobre montanhas nevadas, estilo aquarela"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="numberOfImages">Número de Imagens</label>
+                            <select id="numberOfImages" name="numberOfImages">
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="aspectRatio">Proporção</label>
+                            <select id="aspectRatio" name="aspectRatio">
+                                <option value="1:1" selected>1:1 (Quadrado)</option>
+                                <option value="3:4">3:4 (Retrato)</option>
+                                <option value="4:3">4:3 (Paisagem)</option>
+                                <option value="9:16">9:16 (Retrato Vertical)</option>
+                                <option value="16:9">16:9 (Paisagem Horizontal)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="model">Modelo</label>
+                            <select id="model" name="model">
+                                <option value="imagen-3.0-generate-001" selected>Imagen 3.0 (Alta Qualidade)</option>
+                                <option value="imagen-3.0-fast-generate-001">Imagen 3.0 Fast (Rápido)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="negativePrompt">Prompt Negativo (Opcional)</label>
+                        <input
+                            type="text"
+                            id="negativePrompt"
+                            name="negativePrompt"
+                            placeholder="Ex: pessoas, carros, prédios"
+                        />
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="language">Idioma</label>
+                            <select id="language" name="language">
+                                <option value="pt" selected>Português</option>
+                                <option value="en">English</option>
+                                <option value="es">Español</option>
+                                <option value="fr">Français</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="safetyFilterLevel">Filtro de Segurança</label>
+                            <select id="safetyFilterLevel" name="safetyFilterLevel">
+                                <option value="strict">Estrito</option>
+                                <option value="default" selected>Padrão</option>
+                                <option value="permissive">Permissivo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="addWatermark" name="addWatermark" />
+                            Adicionar marca d'água
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        🎨 Gerar Imagem
+                    </button>
+                </form>
+
+                <!-- Prompts de Exemplo -->
+                <div class="example-prompts">
+                    <h3>Exemplos de Prompts:</h3>
+                    <div class="prompt-examples">
+                        <button class="example-btn" data-prompt="Um dragão majestoso voando sobre um castelo medieval ao amanhecer, arte digital detalhada">
+                            Dragão Medieval
+                        </button>
+                        <button class="example-btn" data-prompt="Uma cidade futurista com arranha-céus iluminados por neon, estilo cyberpunk">
+                            Cidade Cyberpunk
+                        </button>
+                        <button class="example-btn" data-prompt="Floresta mágica com árvores bioluminescentes e criaturas fantásticas, estilo fantasia">
+                            Floresta Mágica
+                        </button>
+                        <button class="example-btn" data-prompt="Astronauta surfando em ondas espaciais entre estrelas e nebulosas, arte surrealista">
+                            Astronauta Surfista
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="results-section" style="display: none;">
+                <h2>Resultados</h2>
+                <div id="results-grid" class="results-grid"></div>
+            </div>
+        </div>
+
+        <!-- Tab: Edit -->
+        <div class="tab-content" id="edit-tab">
+            <div class="form-section">
+                <h2>Editar Imagem Existente</h2>
+                <form id="edit-form">
+                    <div class="form-group">
+                        <label for="edit-imageUrl">URL da Imagem *</label>
+                        <input
+                            type="url"
+                            id="edit-imageUrl"
+                            name="imageUrl"
+                            placeholder="https://example.com/image.png"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-prompt">Descrição das Mudanças *</label>
+                        <textarea
+                            id="edit-prompt"
+                            name="prompt"
+                            rows="3"
+                            placeholder="Ex: Transformar o céu em um pôr do sol dramático"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-maskUrl">URL da Máscara (Opcional)</label>
+                        <input
+                            type="url"
+                            id="edit-maskUrl"
+                            name="maskUrl"
+                            placeholder="https://example.com/mask.png"
+                        />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        ✏️ Editar Imagem
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab: Upscale -->
+        <div class="tab-content" id="upscale-tab">
+            <div class="form-section">
+                <h2>Aumentar Resolução (Upscale)</h2>
+                <form id="upscale-form">
+                    <div class="form-group">
+                        <label for="upscale-imageUrl">URL da Imagem *</label>
+                        <input
+                            type="url"
+                            id="upscale-imageUrl"
+                            name="imageUrl"
+                            placeholder="https://example.com/image.png"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scaleFactor">Fator de Escala</label>
+                        <select id="scaleFactor" name="scaleFactor">
+                            <option value="2" selected>2x</option>
+                            <option value="4">4x</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        📈 Fazer Upscale
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab: Variations -->
+        <div class="tab-content" id="variations-tab">
+            <div class="form-section">
+                <h2>Gerar Variações de Imagem</h2>
+                <form id="variations-form">
+                    <div class="form-group">
+                        <label for="variations-imageUrl">URL da Imagem *</label>
+                        <input
+                            type="url"
+                            id="variations-imageUrl"
+                            name="imageUrl"
+                            placeholder="https://example.com/image.png"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numberOfVariations">Número de Variações</label>
+                        <select id="numberOfVariations" name="numberOfVariations">
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="variations-prompt">Orientação (Opcional)</label>
+                        <input
+                            type="text"
+                            id="variations-prompt"
+                            name="prompt"
+                            placeholder="Ex: Variações com diferentes estilos artísticos"
+                        />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        🔄 Gerar Variações
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab: Models -->
+        <div class="tab-content" id="models-tab">
+            <div class="form-section">
+                <h2>Modelos Disponíveis</h2>
+                <button id="load-models-btn" class="btn btn-secondary">
+                    🤖 Carregar Modelos
+                </button>
+                <div id="models-list" class="models-list"></div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay" style="display: none;">
+            <div class="spinner"></div>
+            <p>Gerando sua imagem... Isso pode levar alguns segundos.</p>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toast-container" class="toast-container"></div>
+    </div>
+
+    <footer class="footer">
+        <p>Powered by Google Gemini Nano Banana API |
+           <a href="#" id="api-docs-link">Documentação da API</a>
+        </p>
+    </footer>
+
+    <script src="public/js/api.js"></script>
+    <script src="public/js/ui.js"></script>
+    <script src="public/js/app.js"></script>
+</body>
+</html>

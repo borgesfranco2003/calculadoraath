@@ -1,0 +1,18 @@
+{
+  "name": "nano-banana-api-frontend",
+  "version": "1.0.0",
+  "description": "Frontend para Nano Banana Image Generator API",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve . --listen 8080"
+  },
+  "keywords": [
+    "gemini",
+    "nano-banana",
+    "image-generation",
+    "frontend"
+  ],
+  "author": "",
+  "license": "MIT"
+}
