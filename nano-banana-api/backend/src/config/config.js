@@ -18,10 +18,13 @@ module.exports = {
   maxImageCount: parseInt(process.env.MAX_IMAGE_COUNT) || 4,
   defaultImageSize: process.env.DEFAULT_IMAGE_SIZE || '1024x1024',
 
-  // Modelos disponíveis
+  // Preço por imagem (para referência)
+  costPerImage: 0.039, // $0.039 por imagem (1290 tokens de saída)
+
+  // Modelos disponíveis - Gemini 2.5 Flash Image (Nano Banana)
   models: {
-    imagen3: 'imagen-3.0-generate-001',
-    imagen3Fast: 'imagen-3.0-fast-generate-001'
+    nanoBanana: 'gemini-2.5-flash-image',
+    nanoBananaPreview: 'gemini-2.5-flash-image-preview'
   },
 
   // Aspect ratios suportados

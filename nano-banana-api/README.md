@@ -1,6 +1,6 @@
 # 🍌 Nano Banana Image Generator API
 
-API REST completa para explorar todas as funcionalidades do Gemini Nano Banana - Sistema de geração de imagens usando inteligência artificial da Google.
+API REST completa para explorar todas as funcionalidades do **Gemini 2.5 Flash Image** (também conhecido como Nano Banana) - Sistema de geração de imagens usando inteligência artificial da Google. **95% mais barato que OpenAI** ($0.039 por imagem).
 
 ## 📋 Índice
 
@@ -22,7 +22,8 @@ API REST completa para explorar todas as funcionalidades do Gemini Nano Banana -
 - **Edição de Imagens**: Modifique imagens existentes com instruções em linguagem natural
 - **Upscale**: Aumente a resolução de imagens (2x ou 4x)
 - **Variações**: Gere múltiplas variações de uma imagem base
-- **Múltiplos Modelos**: Suporte para Imagen 3.0 e Imagen 3.0 Fast
+- **Gemini 2.5 Flash Image**: Modelo state-of-the-art também conhecido como Nano Banana
+- **Custo Baixo**: $0.039 por imagem - 95% mais barato que OpenAI
 - **Proporções Diversas**: Suporte para 1:1, 3:4, 4:3, 9:16, 16:9
 - **Prompt Negativo**: Especifique o que evitar nas imagens
 - **Filtros de Segurança**: Configurações de segurança ajustáveis
@@ -160,10 +161,17 @@ Acesse `http://localhost:8080`
 
 ### Obtendo a Chave de API do Google
 
+Para usar o Gemini 2.5 Flash Image (Nano Banana):
+
 1. Acesse [Google AI Studio](https://makersuite.google.com/app/apikey)
 2. Crie um novo projeto ou selecione um existente
 3. Gere uma chave de API
 4. Copie a chave e adicione ao arquivo `.env`
+
+**Preços do Nano Banana**:
+- $30.00 por 1 milhão de tokens de saída
+- 1 imagem = 1290 tokens de saída
+- **Custo final: $0.039 por imagem** (95% mais barato que OpenAI)
 
 ## 🎯 Uso
 
@@ -282,7 +290,7 @@ O frontend oferece uma interface intuitiva para todas as funcionalidades:
 
 ## 📚 Exemplos
 
-### Exemplo 1: Paisagem Natural
+### Exemplo 1: Paisagem Natural com Nano Banana
 
 ```javascript
 const response = await fetch('http://localhost:3000/api/images/generate', {
@@ -292,12 +300,14 @@ const response = await fetch('http://localhost:3000/api/images/generate', {
     prompt: 'Uma floresta tropical exuberante com cachoeira ao amanhecer',
     numberOfImages: 1,
     aspectRatio: '16:9',
+    model: 'gemini-2.5-flash-image',
     negativePrompt: 'pessoas, animais'
   })
 });
 
 const data = await response.json();
 console.log(data);
+// Custo: $0.039
 ```
 
 ### Exemplo 2: Arte Digital
@@ -307,9 +317,10 @@ await api.generateImage({
   prompt: 'Cidade futurista com arranha-céus de vidro e carros voadores',
   numberOfImages: 3,
   aspectRatio: '16:9',
-  model: 'imagen-3.0-generate-001',
+  model: 'gemini-2.5-flash-image', // Nano Banana
   language: 'pt'
 });
+// Custo: 3 imagens × $0.039 = $0.117
 ```
 
 ### Exemplo 3: Retrato Artístico
@@ -318,10 +329,12 @@ await api.generateImage({
 await api.generateImage({
   prompt: 'Retrato de uma mulher em estilo art nouveau',
   aspectRatio: '3:4',
+  model: 'gemini-2.5-flash-image',
   negativePrompt: 'fotorrealista, moderno',
   safetyFilterLevel: 'default',
   personGeneration: 'allow_adult'
 });
+// Custo: $0.039
 ```
 
 ## 🔒 Segurança

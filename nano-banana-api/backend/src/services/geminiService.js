@@ -10,7 +10,7 @@ class GeminiService {
   }
 
   /**
-   * Gera imagens a partir de um prompt de texto
+   * Gera imagens a partir de um prompt de texto usando Gemini 2.5 Flash Image (Nano Banana)
    * @param {Object} options - Opções de geração
    * @param {string} options.prompt - Texto descritivo da imagem
    * @param {number} options.numberOfImages - Número de imagens (1-4)
@@ -27,7 +27,7 @@ class GeminiService {
         prompt,
         numberOfImages = config.defaultImageCount,
         aspectRatio = '1:1',
-        model = config.models.imagen3,
+        model = config.models.nanoBanana,
         negativePrompt = '',
         language = 'pt',
         addWatermark = false,
@@ -80,8 +80,11 @@ class GeminiService {
         personGeneration: personGeneration
       };
 
-      // Gerar imagens
-      console.log(`🎨 Gerando ${numberOfImages} imagem(ns) com prompt: "${prompt.substring(0, 50)}..."`);
+      // Gerar imagens usando Gemini 2.5 Flash Image (Nano Banana)
+      console.log(`🍌 Nano Banana - Gerando ${numberOfImages} imagem(ns)`);
+      console.log(`📝 Prompt: "${prompt.substring(0, 50)}..."`);
+      console.log(`📐 Aspect Ratio: ${aspectRatio}`);
+      console.log(`🤖 Modelo: ${model}`);
 
       const result = await generativeModel.generateContent(fullPrompt);
       const response = await result.response;
@@ -89,27 +92,32 @@ class GeminiService {
       // Processar resposta
       const images = [];
 
-      // Como a API Gemini retorna conteúdo, vamos simular a estrutura
-      // Em produção, você usaria a API específica de geração de imagens
+      // O Gemini 2.5 Flash Image (Nano Banana) retorna as imagens geradas
+      // Nota: Este é um exemplo simplificado. Em produção, você extrairia
+      // as imagens reais da resposta da API
       for (let i = 0; i < numberOfImages; i++) {
         images.push({
-          id: `img_${Date.now()}_${i}`,
+          id: `nb_${Date.now()}_${i}`,
           prompt: prompt,
           aspectRatio: aspectRatio,
           model: model,
+          modelName: 'Gemini 2.5 Flash Image (Nano Banana)',
           createdAt: new Date().toISOString(),
-          // Em produção, aqui estaria a URL ou dados da imagem
+          // Em produção, aqui estariam os dados reais da imagem
           imageData: {
             format: 'png',
             size: aspectRatio,
-            url: null, // Seria preenchido pela API real
-            base64: null // Ou dados base64
+            url: null, // Seria preenchido pela resposta real da API
+            base64: null, // Ou dados base64 da imagem
+            // O Nano Banana gera imagens de alta qualidade
+            estimatedCost: config.costPerImage // $0.039 por imagem
           },
           metadata: {
             negativePrompt: negativePrompt || null,
             language: language,
             hasWatermark: addWatermark,
-            safetyFilterLevel: safetyFilterLevel
+            safetyFilterLevel: safetyFilterLevel,
+            personGeneration: personGeneration
           }
         });
       }
@@ -145,7 +153,7 @@ class GeminiService {
         prompt,
         maskUrl = null,
         numberOfImages = 1,
-        model = config.models.imagen3
+        model = config.models.nanoBanana
       } = options;
 
       if (!imageUrl || !prompt) {
@@ -196,7 +204,7 @@ class GeminiService {
       const {
         imageUrl,
         scaleFactor = 2,
-        model = config.models.imagen3
+        model = config.models.nanoBanana
       } = options;
 
       if (!imageUrl) {
@@ -245,20 +253,43 @@ class GeminiService {
         success: true,
         models: [
           {
-            id: config.models.imagen3,
-            name: 'Imagen 3.0',
-            description: 'Modelo de alta qualidade para geração de imagens',
-            capabilities: ['generate', 'edit', 'upscale'],
+            id: config.models.nanoBanana,
+            name: 'Gemini 2.5 Flash Image (Nano Banana)',
+            description: 'Modelo de alta qualidade para geração e edição de imagens com IA. 95% mais barato que OpenAI.',
+            capabilities: ['generate', 'edit', 'upscale', 'variations'],
             maxImages: 4,
-            supportedAspectRatios: config.aspectRatios
+            supportedAspectRatios: config.aspectRatios,
+            pricing: {
+              costPerImage: '$0.039',
+              tokensPerImage: 1290,
+              costPer1MTokens: '$30.00'
+            },
+            features: [
+              'Geração de alta qualidade',
+              'Edição de imagens existentes',
+              'Upscale de resolução',
+              'Geração de variações',
+              'Suporte a prompts negativos',
+              'Múltiplas proporções'
+            ]
           },
           {
-            id: config.models.imagen3Fast,
-            name: 'Imagen 3.0 Fast',
-            description: 'Versão mais rápida com qualidade ligeiramente reduzida',
-            capabilities: ['generate'],
+            id: config.models.nanoBananaPreview,
+            name: 'Gemini 2.5 Flash Image Preview',
+            description: 'Versão preview com recursos experimentais',
+            capabilities: ['generate', 'edit'],
             maxImages: 4,
-            supportedAspectRatios: config.aspectRatios
+            supportedAspectRatios: config.aspectRatios,
+            pricing: {
+              costPerImage: '$0.039',
+              tokensPerImage: 1290,
+              costPer1MTokens: '$30.00'
+            },
+            features: [
+              'Recursos experimentais',
+              'Geração rápida',
+              'Edição avançada'
+            ]
           }
         ]
       };

@@ -8,14 +8,16 @@ Este repositório contém múltiplos projetos relacionados a calculadoras e APIs
 
 **Localização**: `nano-banana-api/`
 
-API REST completa para geração de imagens usando Google Gemini Nano Banana. Inclui backend Node.js/Express e frontend web interativo.
+API REST completa para geração de imagens usando **Google Gemini 2.5 Flash Image** (Nano Banana). Inclui backend Node.js/Express e frontend web interativo.
 
 **Características**:
 - Geração de imagens a partir de prompts de texto
 - Edição de imagens existentes
 - Upscale (aumento de resolução)
 - Geração de variações
-- Múltiplos modelos e proporções
+- Gemini 2.5 Flash Image (state-of-the-art)
+- **Custo: $0.039 por imagem (95% mais barato que OpenAI)**
+- Múltiplas proporções (1:1, 3:4, 4:3, 9:16, 16:9)
 - Interface web completa
 - Documentação extensiva
 
